@@ -1,0 +1,102 @@
+# Elegant Gentoo Purple Sway
+
+set $mod Mod4
+font pango:CaskaydiaCove Nerd Font 14
+exec waybar
+
+# Audio adjuster
+
+exec --no-startup-id pasystray
+floating_modifier $mod
+
+# Set wallpaper and cursor
+exec_always swaybg -i /home/k4cpi/Obrazy/Linux.png -m fill
+seat seat0 xcursor_theme BreezeX 24
+
+# Colors
+set $bg         #2B1E33
+set $bg-alt     #241moonlight-powerline82C
+set $accent     #6C5AA0
+set $accent2    #8B78C9
+set $text	#E8E3FF
+set $urgent     #C75A7A
+
+# Borders
+default_border pixel 2
+default_floating_border pixel 2
+
+client.focused          $accent2 $accent2 $text $accent2 $accent2
+client.unfocused        $bg	$bg	 $text $bg	$bg
+client.urgent           $urgent  $urgent  $text $urgent  $urgent
+
+# Bar
+bar {
+    font pango:CaskaydiaCove Nerd Font Mono 14
+    position bottom 
+    swaybar_command waybar
+}
+
+# Keybinds
+bindsym $mod+Space exec rofi -show drun
+bindsym $mod+c kill
+bindsym $mod+Shift+c reload
+bindsym $mod+q exec kitty
+bindsym $mod+m exit
+bindsym $mod+Shift+Tab floating toggle
+bindsym $mod+Shift+F1 exec ~/bin/toggle-audio.sh
+bindsym Print exec grim -g "$(slurp)" ~/Obrazy/screenshot_$(date +%s).png
+bindsym $mod+Print exec grim ~/Obrazy/screenshot_$(date +%s).png
+bindsym $mod+Shift+Up    exec brightnessctl set +10%
+bindsym $mod+Shift+Down  exec brightnessctl set 10%-
+bindsym $mod+Up exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym $mod+Down  exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym $mod+Shift+m     exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym $mod+l exec swaylock -f -c 161617
+
+# Workspaces
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+
+# Set up runtime directory for user services
+exec --no-startup-id export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+
+# Start PipeWire + PulseAudio + WirePlumber + Autotiling
+exec --no-startup-id rc-service pipewire start
+exec --no-startup-id rc-service pipewire-pulse start
+exec --no-startup-id rc-service wireplumber start
+exec_always autotiling-rs
+
+# Scale
+output DP-2 resolution 3840x2160 scale 1.5
+
+# Set cursor theme
+set $cursor_theme Breeze
+set $cursor_size 32
+exec_always "export XCURSOR_THEME=$cursor_theme"
+exec_always "export XCURSOR_SIZE=$cursor_size"
+
+# Super+Escape opens the power menu
+bindsym $mod+Escape exec ~/bin/power-menu.sh
+
+# Adjust Rapoo mouse speed and acceleration
+input "Rapoo Rapoo Gaming Device" {
+    accel_profile flat       # disables acceleration
+    pointer_accel 0.2        # slower than default; adjust -1.0 to 1.0
+}
+
+# Enter resize mode
+bindsym $mod+r floating resize
+
+# In floating resize mode, use arrow keys to resize
+mode "floating resize" {
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+
+    # exit resize mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}

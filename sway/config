@@ -1,4 +1,4 @@
-# Elegant Gentoo Purple Sway
+# k4cpizz-cool-sway, Thanks for using this config!
 
 set $mod Mod4
 font pango:CaskaydiaCove Nerd Font 14
@@ -9,9 +9,8 @@ exec waybar
 exec --no-startup-id pasystray
 floating_modifier $mod
 
-# Set wallpaper and cursor
-exec_always swaybg -i /home/k4cpi/Obrazy/Linux.png -m fill
-seat seat0 xcursor_theme BreezeX 24
+# Set wallpaper (Add your own wallpaper here, .png works well.)
+exec_always swaybg -i /home/$USER/Pictures/wallpaper.png -m fill
 
 # Colors
 set $bg         #2B1E33
@@ -70,21 +69,6 @@ exec_always autotiling-rs
 
 # Scale
 output DP-2 resolution 3840x2160 scale 1.5
-
-# Set cursor theme
-set $cursor_theme Breeze
-set $cursor_size 32
-exec_always "export XCURSOR_THEME=$cursor_theme"
-exec_always "export XCURSOR_SIZE=$cursor_size"
-
-# Super+Escape opens the power menu
-bindsym $mod+Escape exec ~/bin/power-menu.sh
-
-# Adjust Rapoo mouse speed and acceleration
-input "Rapoo Rapoo Gaming Device" {
-    accel_profile flat       # disables acceleration
-    pointer_accel 0.2        # slower than default; adjust -1.0 to 1.0
-}
 
 # Enter resize mode
 bindsym $mod+r floating resize
